@@ -7,7 +7,17 @@ $sliders = mysqli_fetch_all($q_slider, MYSQLI_ASSOC);
 $q_setting = mysqli_query($conn, "SELECT * FROM settings ORDER BY id DESC LIMIT 1");
 $about = mysqli_fetch_assoc($q_setting);
 // var_dump($about);
+
+//resume
+$q_resume = mysqli_query($conn, "SELECT * FROM resume ORDER BY id DESC");
+$resume = mysqli_fetch_all($q_resume, MYSQLI_ASSOC);
+
+$q_skill = mysqli_query($conn, "SELECT * FROM skills ORDER BY id DESC");
+$skill = mysqli_fetch_all($q_skill, MYSQLI_ASSOC);
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,13 +89,15 @@ $about = mysqli_fetch_assoc($q_setting);
 								data-scrollax=" properties: { translateY: '70%' }">
 								<div class="text">
 									<span class="subheading">Hello!</span>
-									<h1 class="mb-4 mt-3"><?= $title['0'] ?> <span><?php array_shift($title); 
-									                                                     echo implode(" ", $title) ?> </span></h1>
+									<h1 class="mb-4 mt-3"><?= $title['0'] ?> <span><?php array_shift($title);
+										 echo implode(" ", $title) ?> </span></h1>
 
 									<h2 class="mb-1"><?= $v['subtitle'] ?></h2>
 									<p class="mb-4 text-light"><?= $v['description'] ?></p>
-									<p><a href="<?= $v['button1_link'] ?>" class="btn btn-primary py-3 px-4"><?= $v['button1_link'] ?></a> 
-									<a href="<?= $v['button2_link'] ?>" class="btn btn-white btn-outline-white py-3 px-4"><?= $v['button2_link'] ?></a></p>
+									<p><a href="<?= $v['button1_link'] ?>" class="btn btn-primary py-3 px-4"><?= $v['button1_link'] ?></a>
+										<a href="<?= $v['button2_link'] ?>"
+											class="btn btn-white btn-outline-white py-3 px-4"><?= $v['button2_link'] ?></a>
+									</p>
 								</div>
 							</div>
 						</div>
@@ -94,7 +106,7 @@ $about = mysqli_fetch_assoc($q_setting);
 				<?php
 			}
 			?>
-			
+
 
 
 			<!-- <div class="slider-item">
@@ -169,31 +181,36 @@ $about = mysqli_fetch_assoc($q_setting);
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-6">
-					<div class="resume-wrap ftco-animate">
-						<span class="date">2014-2015</span>
-						<h2>Master Degree of Design</h2>
-						<span class="position">Cambridge University</span>
-						<p class="mt-4">A small river named Duden flows by their place and supplies it with the necessary
-							regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-					</div>
-					<div class="resume-wrap ftco-animate">
+				<?php
+				foreach ($resume as $v) {
+					?>
+					<div class="col-md-6">
+						<div class="resume-wrap ftco-animate">
+							<span class="date"><?= $v['year_start'] . " - " . $v['year_end'] ?>2014-2015</span>
+							<h2><?= $v['title'] ?></h2>
+							<span class="position"><?= $v['subtitle'] ?></span>
+							<p class="mt-4"><?= $v['description'] ?></p>
+						</div>
+						<!-- <div class="resume-wrap ftco-animate">
 						<span class="date">2014-2015</span>
 						<h2>Bachelor's Degree of C.A</h2>
 						<span class="position">Cambridge University</span>
 						<p class="mt-4">A small river named Duden flows by their place and supplies it with the necessary
 							regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-					</div>
-					<div class="resume-wrap ftco-animate">
+					</div> -->
+						<!-- <div class="resume-wrap ftco-animate">
 						<span class="date">2014-2015</span>
 						<h2>Diploma in Computer</h2>
 						<span class="position">Cambridge University</span>
 						<p class="mt-4">A small river named Duden flows by their place and supplies it with the necessary
 							regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+					</div> -->
 					</div>
-				</div>
 
-				<div class="col-md-6">
+						<?php
+				}
+				?>
+				<!-- <div class="col-md-6">
 					<div class="resume-wrap ftco-animate">
 						<span class="date">2014-2015</span>
 						<h2>Art &amp; Creative Director</h2>
@@ -215,7 +232,7 @@ $about = mysqli_fetch_assoc($q_setting);
 						<p class="mt-4">A small river named Duden flows by their place and supplies it with the necessary
 							regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<div class="row justify-content-center mt-5">
 				<div class="col-md-6 text-center ftco-animate">
@@ -310,14 +327,34 @@ $about = mysqli_fetch_assoc($q_setting);
 					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
 				</div>
 			</div>
+			<div class="row"></div>
 			<div class="row">
-				<div class="col-md-6 animate-box">
+				<?php
+				foreach ($skill as $v) {
+				?>
+					<div class="col-md-6 animate-box">
+						<div class="progress-wrap ftco-animate">
+							<h3 style="margin-bottom: <?= $v['progress'] < 10 ? '35px' : '5px' ?>;"><?= $v['name']; ?>  </h3> 
+							<div class="progress">
+								<div class="progress-bar color-<?= $index + 1 ?>" role="progressbar" aria-valuenow="<?= $v['progress'] ?>"
+									aria-valuemin="0" aria-valuemax="0" aria-vauemax="100" style="width:<?= $v['progress'] ?>%">
+									<span><?php echo $v['progress']; ?>%</span>
+								</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php
+				}
+				?>
+				<!-- <div class="col-md-6 animate-box">
 					<div class="progress-wrap ftco-animate">
-						<h3>Photoshop</h3>
+						<h3><?php echo $about['name'] ?></h3>
 						<div class="progress">
 							<div class="progress-bar color-1" role="progressbar" aria-valuenow="90" aria-valuemin="0"
 								aria-valuemax="100" style="width:90%">
-								<span>90%</span>
+								<span><?php echo $v['skill'] ?></span>
 							</div>
 						</div>
 					</div>
@@ -377,7 +414,8 @@ $about = mysqli_fetch_assoc($q_setting);
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
+
 		</div>
 	</section>
 
