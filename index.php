@@ -1,5 +1,5 @@
 <?php
-include "project-crud-main/config/koneksi.php";
+include "admin/config/koneksi.php";
 $q_slider = mysqli_query($conn, "SELECT * FROM sliders WHERE is_active=1 ORDER BY id DESC LIMIT 2");
 $sliders = mysqli_fetch_all($q_slider, MYSQLI_ASSOC);
 
@@ -14,6 +14,19 @@ $resume = mysqli_fetch_all($q_resume, MYSQLI_ASSOC);
 
 $q_skill = mysqli_query($conn, "SELECT * FROM skills ORDER BY id DESC");
 $skill = mysqli_fetch_all($q_skill, MYSQLI_ASSOC);
+
+// contact
+if(isset($_POST['submit'])){
+	$name = $_POST['name'];
+	$email = $_POST['email'];
+	$subject = $_POST['subject'];
+	$message = $_POST['message'];
+
+	//DML
+	// masukkan ke dalam tabel contact 
+	$insert = mysqli_query($conn, "INSERT INTO contacts (name,email,subject,message) VALUES ('$name', '$email', '$subject', '$message')");
+	header("location:index.php?tambah=success");
+}
 
 ?>
 
@@ -334,11 +347,11 @@ $skill = mysqli_fetch_all($q_skill, MYSQLI_ASSOC);
 				?>
 					<div class="col-md-6 animate-box">
 						<div class="progress-wrap ftco-animate">
-							<h3 style="margin-bottom: <?= $v['progress'] < 10 ? '35px' : '5px' ?>;"><?= $v['name']; ?>  </h3> 
+							<h3 style="margin-bottom: <?= $v['progress'] < 10 ? '33px' : '5px' ?>;"><?= htmlspecialchars($v['name']) ?>  </h3> 
 							<div class="progress">
 								<div class="progress-bar color-<?= $index + 1 ?>" role="progressbar" aria-valuenow="<?= $v['progress'] ?>"
 									aria-valuemin="0" aria-valuemax="0" aria-vauemax="100" style="width:<?= $v['progress'] ?>%">
-									<span><?php echo $v['progress']; ?>%</span>
+									<span><?= $v['progress']; ?>%</span> 
 								</div>
 									
 								</div>
@@ -666,21 +679,21 @@ $skill = mysqli_fetch_all($q_skill, MYSQLI_ASSOC);
 
 			<div class="row no-gutters block-9">
 				<div class="col-md-6 order-md-last d-flex">
-					<form action="#" class="bg-light p-4 p-md-5 contact-form">
+					<form method="post" action="#" class="bg-light p-4 p-md-5 contact-form">
 						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Your Name">
+							<input type="text" class="form-control" name="name" placeholder="Your Name">
 						</div>
 						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Your Email">
+							<input type="text" class="form-control" name="email" placeholder="Your Email">
 						</div>
 						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Subject">
+							<input type="text" class="form-control" name="subject" placeholder="Subject">
 						</div>
 						<div class="form-group">
-							<textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
+							<textarea name="message" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
 						</div>
 						<div class="form-group">
-							<input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+							<input type="submit" name="submit" value="Send Message" class="btn btn-primary py-3 px-5">
 						</div>
 					</form>
 
